@@ -1,0 +1,65 @@
+version: '3'
+services :
+  web :
+    image : ocsinventory/ocsinventory-docker-image:latest
+    container_name : ocsinventory-server
+    environment :
+      OCS_DBNAME : ocsweb
+      OCS_DBSERVER_READ : ocsinventory-db
+      OCS_DBSERVER_WRITE : ocsinventory-db
+      OCS_DBUSER : ocs
+      OCS_DBPASS : ocs
+    volumes :
+      - ./nas/docker/ocs/ocsdownload:/usr/share/ocsinventory-reports/ocsreports/download/
+      - ./nas/docker/ocs/ocssrv:/etc/ocsinventory-reports/
+      - ./nas/docker/ocs/ocslib:/var/lib/ocsinventory-reports/
+    links :
+      - db
+    ports :
+      - 80:80
+      - 443:443
+
+  db :
+    image : mysql:5.7
+    container_name : ocsinventory-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD : ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER : ocs
+      MYSQL_PASSWORD : ocs
+      MYSQL_DATABASE : ocsweb
+    volumes :
+      - ./nas/docker/ocs/sql/:/docker-entrypoint-initdb.d/
+      - ./nas/docker/ocs/ocsdata:/var/lib/mysql
+    ports :
+      - 3306:3306
+
+
+
+
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      environment:
+          - PMA_ARBITRARY=1
+          - PMA_HOST=db
+      restart: always
+      ports:
+          - 8080:80
+      volumes:
+          - /sessions
+      links:
+          - db
+
+
+
+volumes:
+  ocsdata:
+    driver: local
+  ocssrv:
+    driver: local
+  ocslib:
+    driver: local
+  ocsdownload:
+    driver: local
