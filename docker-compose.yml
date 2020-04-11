@@ -10,7 +10,7 @@ services :
       OCS_DBUSER : ocs
       OCS_DBPASS : ocs
     volumes :
-       - ocsdownload:/usr/share/ocsinventory-reports/ocsreports/download/
+      - ocsdownload:/usr/share/ocsinventory-reports/ocsreports/download/
       - ocssrv:/etc/ocsinventory-reports/
       - ocslib:/var/lib/ocsinventory-reports/
     links :
