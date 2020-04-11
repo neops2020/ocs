@@ -10,9 +10,9 @@ services :
       OCS_DBUSER : ocs
       OCS_DBPASS : ocs
     volumes :
-      - ./nas/docker/ocs/ocsdownload:/usr/share/ocsinventory-reports/ocsreports/download/
-      - ./nas/docker/ocs/ocssrv:/etc/ocsinventory-reports/
-      - ./nas/docker/ocs/ocslib:/var/lib/ocsinventory-reports/
+       - ocsdownload:/usr/share/ocsinventory-reports/ocsreports/download/
+      - ocssrv:/etc/ocsinventory-reports/
+      - ocslib:/var/lib/ocsinventory-reports/
     links :
       - db
     ports :
@@ -29,8 +29,8 @@ services :
       MYSQL_PASSWORD : ocs
       MYSQL_DATABASE : ocsweb
     volumes :
-      - ./nas/docker/ocs/sql/:/docker-entrypoint-initdb.d/
-      - ./nas/docker/ocs/ocsdata:/var/lib/mysql
+      - ./sql/:/docker-entrypoint-initdb.d/
+      - ocsdata:/var/lib/mysql
     ports :
       - 3306:3306
 
